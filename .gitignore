@@ -1,0 +1,32 @@
+# ============================
+# MATLAB / Simulink GitIgnore
+# ============================
+
+# Simulink cache & generated code
+slprj/
+work/
+*.slxc
+*.mexw64
+*.mexw32
+*.mexmaci64
+*.autosave
+*.asv
+*.mdl.r*
+*.simcache
+*.slxc
+*.slprj
+*.slupdate
+*.slxc.autosave
+
+# Temporary MATLAB files
+*.mat.autosave
+*.m~ 
+*.bak
+*.tmp
+*.log
+
+# MATLAB Editor backup files
+*.asv
+
+
+
