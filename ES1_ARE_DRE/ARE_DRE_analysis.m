@@ -17,13 +17,13 @@ P = care(A,B,Q,R,S);
 
 
 n = size(A,1);   % dimensione del sistema
-P_dot = @(t,P_dre) reshape( A' * reshape(P_dre,n,n) ...
+P_dot = @(t,P_dre) - (reshape( A' * reshape(P_dre,n,n) ...
                           + reshape(P_dre,n,n) * A ...
                           + Q ...
-                          - reshape(P_dre,n,n) * B * (1/R) * B' * reshape(P_dre,n,n), n*n, 1 );
+                          - reshape(P_dre,n,n) * B * (1/R) * B' * reshape(P_dre,n,n), n*n, 1 ));
 
 %condizioni iniziali, inizializzazione funzione e tempo di integrazione
-tspan = [0 10];
+tspan = [10 0];
 P0 = S * eye(2);
 [t, P_sol] = ode45(P_dot, tspan, P0);
 
@@ -38,11 +38,12 @@ end
 
 % Grafico dell errore della ARE e la DRE integrata nel tempo
 figure;
+
 plot(t, squeeze(P_t(1,1,:) - P(1,1))); hold on;
 plot(t, squeeze(P_t(1,2,:) - P(1,2)));
 plot(t, squeeze(P_t(2,1,:) - P(2,1)));
 plot(t, squeeze(P_t(2,2,:) - P(2,2)));
-
+set(gca,'XDir','reverse');
 title('Errore tra P_{ARE} e P(t) ottenuta dalla DRE');
 xlabel('Tempo t');
 ylabel('Errore P(t) - P_{ARE}');
@@ -65,11 +66,12 @@ end
 
 % Grafico dell errore della ARE e la DRE integrata nel tempo
 figure;
+
 plot(t, squeeze(P_list(1,1,:) - P(1,1))); hold on;
 plot(t, squeeze(P_list(1,2,:) - P(1,2)));
 plot(t, squeeze(P_list(2,1,:) - P(2,1)));
 plot(t, squeeze(P_list(2,2,:) - P(2,2)));
-
+set(gca,'XDir','reverse');
 title('Errore tra P_{ARE} e P_k ottenuta dal gradiente adattivo');
 xlabel('Iterazioni (allineate al tempo t)');
 ylabel('Errore P_k - P_{ARE}');
