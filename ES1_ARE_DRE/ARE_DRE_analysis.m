@@ -53,28 +53,26 @@ grid on;
 %Metodo del gradiente adattivo sulla pendenza della DRE
 % Calcolo del gradiente della DRE
 max_iter = length(t);
-alphak = 0.07;
+alphak = 0.3;
 P_list = zeros(n,n,length(t));
 Pgrad = zeros(n,n); 
 
 for i = 1:length(t)
-    grad = A' * Pgrad + Pgrad * A + Q - Pgrad * B * (1/R) * B' * Pgrad;
-    alpha = alphak * (1 + norm(grad,1));
-    Pgrad = Pgrad + alpha * grad;
+    grad = -(A' * Pgrad + Pgrad * A + Q - Pgrad * B * (1/R) * B' * Pgrad);
+    Pgrad = Pgrad - alphak * grad;
     P_list(:,:,i) = Pgrad;
 end
 
 % Grafico dell errore della ARE e la DRE integrata nel tempo
 figure;
+plot(1:length(t), squeeze(P_list(1,1,:) - P(1,1))); hold on;
+plot(1:length(t), squeeze(P_list(1,2,:) - P(1,2)));
+plot(1:length(t), squeeze(P_list(2,1,:) - P(2,1)));
+plot(1:length(t), squeeze(P_list(2,2,:) - P(2,2)));
 
-plot(t, squeeze(P_list(1,1,:) - P(1,1))); hold on;
-plot(t, squeeze(P_list(1,2,:) - P(1,2)));
-plot(t, squeeze(P_list(2,1,:) - P(2,1)));
-plot(t, squeeze(P_list(2,2,:) - P(2,2)));
-set(gca,'XDir','reverse');
-title('Errore tra P_{ARE} e P_k ottenuta dal gradiente adattivo');
-xlabel('Iterazioni (allineate al tempo t)');
-ylabel('Errore P_k - P_{ARE}');
+xlabel('Iterazione k');
+ylabel('Errore rispetto a P_{ARE}');
+title('Convergenza del metodo iterativo');
 legend('e_{11}','e_{12}','e_{21}','e_{22}');
 grid on;
 
