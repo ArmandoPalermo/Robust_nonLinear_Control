@@ -43,6 +43,14 @@ title('Simulazione sistema non lineare 3');
 c = 25.01;
 contour(x1g,x2g,Vgrid,[c c],'y','LineWidth',2);
 
+% Tubetto dissipativo: |x2| < r
+r = sqrt(B1/B2);
+plot([x1min x1max], [ r r], 'r--', 'LineWidth', 2);
+plot([x1min x1max], [-r -r], 'r--', 'LineWidth', 2);
+
+text(x1min+0.2, r+0.2, 'x_2 = r', 'Color', 'r');
+text(x1min+0.2, -r-0.4, 'x_2 = -r', 'Color', 'r');
+
 % Ginput scelta del punto iniziale
 [x10, x20] = ginput(1);
 x0 = [x10; x20];
