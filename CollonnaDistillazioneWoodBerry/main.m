@@ -4,7 +4,7 @@ s = tf('s');
 G0 = [12.8 /(16.7*s + 1),   -18.9/(21*s + 1);
     6.6/(10.95*s + 1),      -19.4/(14.4*s + 1)];
 
-omega0 = 0.02;
+omega0 = 0.06;
 A = 10e-4;
 M = 1.5;
 
@@ -26,11 +26,14 @@ W12 = 2*theta12*s/(1 + theta12*s);
 W21 = 2*theta21*s/(1 + theta21*s);
 W22 = 2*theta22*s/(1 + theta22*s);
 
-D1 = ultidyn('D1',[1 1]);
+D1 = ultidyn('Delta1',[1 1]);
+D2 = ultidyn('Delta2',[1 1]);
+D3 = ultidyn('Delta3',[1 1]);
+D4 = ultidyn('Delta4',[1 1]);
 
 Gunc = [
-    G0(1,1)*(1 + W11*D1),  G0(1,2)*(1 + W12*D1);
-    G0(2,1)*(1 + W21*D1),  G0(2,2)*(1 + W22*D1)
+    G0(1,1)*(1 + W11*D1),  G0(1,2)*(1 + W12*D2);
+    G0(2,1)*(1 + W21*D3),  G0(2,2)*(1 + W22*D4)
 ];
 
 
@@ -63,7 +66,7 @@ disp(norm(Wp * S,inf));
 
 
 Gunc_cl = feedback(Gunc * K, eye(2));
-realizzazioni_Gunc = usample(Gunc_cl,5);
+realizzazioni_Gunc = usample(Gunc_cl,20);
 G0_cl = feedback(G0 * K, eye(2));
 realizzaizoni_nom = usample(G0_cl);
 
@@ -103,10 +106,3 @@ ylabel('\gamma');
 grid on;
 
 
-%Worstcase con configurazione attuale
-[stabmarg,wcu] = robstab(Gunc_cl);
-Gunc_wc = usubs(Gunc_cl,wcu);
-
-figure;
-step(Gunc_wc);
-grid on;
