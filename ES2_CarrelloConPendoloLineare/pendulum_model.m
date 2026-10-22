@@ -1,4 +1,4 @@
-%% MODELLO LINEARE
+%% MODELLO
 syms M m l g real
 
 % Momento d'inerzia del pendolo
@@ -30,8 +30,8 @@ Cnum = C;
 
 
 % Verifica della risolubilita del problema(H1,H2,H3*)
-S = [0 4 0;
-    -4 0 0;
+S = [0 1 0;
+    -1 0 0;
     0 0 0];
 % A 0 0 
 % 0 0 B
